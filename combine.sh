@@ -7,5 +7,5 @@ do
 (cat "${a}"; echo) >> allspore.fasta
 done
 
-muscle3.8.31_i86linux64 -in allspore.fasta -out allspore.afa
+
 

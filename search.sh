@@ -1,9 +1,17 @@
-#build an alignment profile using muscle (muscle -in <inputfile> -out <outputfile>) and
-# then hmmbuild (hmmbuild <output hmm file> <seq alignment from above>).
-# Next, run it through this loop to search each .fasta file for matches.
+#Usage: bash script.sh
+# run script in directory that has a .fasta file containing all gene sequences of interest,
+# the muscle program, the hmmbuild program and the hmmsearch program.
 
-for a in *.fasta
+muscle3.8.31_i86linux64 -in alltransport.fasta -out alltransport.align.fasta
+hmmbuild transport.hmm alltransport.align.fasta
+
+rm alltransport.align.fasta results.final.txt
+
+for a in [A-Z]*.fasta
 do
-hmmsearch -A results.txt alltransport.hmm $a >> results.txt
+hmmsearch --tblout "$a".Results.txt transport.hmm $a
+echo "$a" >> results.final.txt
+cat "$a".Results.txt | grep -c -v "#" >> results.final.txt
 done
 
+cat results.final.txt
